@@ -1,9 +1,9 @@
 import csv
 
-from domainmodel.movie import Movie
-from domainmodel.actor import Actor
-from domainmodel.genre import Genre
-from domainmodel.director import Director
+from domain.movie import Movie
+from domain.actor import Actor
+from domain.genre import Genre
+from domain.director import Director
 
 
 class MovieFileCSVReader:
@@ -36,13 +36,27 @@ class MovieFileCSVReader:
             movie_file_reader = csv.DictReader(csvfile)
 
             for row in movie_file_reader:
-                self._dataset_of_movies.append(Movie(row['Title'], int(row['Year'])))
-                self._dataset_of_directors.add(Director(row['Director']))
-                for actor in row['Actors'].split(","):
-                    self._dataset_of_actors.add(Actor(actor.strip()))
+                movie = Movie(row['Title'], int(row['Year']))
+                director = Director(row['Director'])
+                actor_list = []
+                genre_list = []
+                for actor_name in row['Actors'].split(","):
+                    actor = Actor(actor_name.strip())
+                    actor_list.append(actor)
+                    self._dataset_of_actors.add(actor)
 
-                for genre in row['Genre'].split(","):
-                    self._dataset_of_genres.add(Genre(genre))
+                for genre_name in row['Genre'].split(","):
+                    genre = Genre(genre_name)
+                    genre_list.append(genre)
+                    self._dataset_of_genres.add(genre)
+
+                movie.director = director
+                movie.description = row['Description']
+                movie.actors = actor_list
+                movie.genres = genre_list
+                self._dataset_of_movies.append(movie)
+                self._dataset_of_directors.add(director)
+
 
 
 # filename = 'E:\git\CS235FlixSkeleton\datafiles\Data1000Movies.csv'

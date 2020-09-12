@@ -1,6 +1,6 @@
-from domainmodel.genre import Genre
-from domainmodel.actor import Actor
-from domainmodel.director import Director
+from domain.genre import Genre
+from domain.actor import Actor
+from domain.director import Director
 
 
 class Movie:
