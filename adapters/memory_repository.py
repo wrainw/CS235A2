@@ -5,8 +5,6 @@ from typing import List
 
 from bisect import bisect, bisect_left, insort_left
 
-#from werkzeug.security import generate_password_hash
-
 from adapters.repository import AbstractRepository, RepositoryException
 from adapters.movie_file_csv_reader import MovieFileCSVReader
 from domain.actor import Actor
@@ -70,19 +68,19 @@ class MemoryRepository(AbstractRepository):
         return [movie for movie in self._movies if movie.director == director]
 
     def add_actor(self, actor: Actor):
-        self._actors.append(actor)
+        insort_left(self._actors, actor)
 
     def get_actor(self) -> List[Actor]:
         return self._actors
 
     def add_director(self, director: Director):
-        self._directors.append(director)
+        insort_left(self._directors, director)
 
     def get_director(self) -> List[Director]:
         return self._directors
 
     def add_genre(self, genre: Genre):
-        self._genres.append(genre)
+        insort_left(self._genres, genre)
 
     def get_genre(self) -> List[Genre]:
         return self._genres
@@ -96,12 +94,60 @@ class MemoryRepository(AbstractRepository):
     def get_reviews(self):
         return self._reviews
 
-    # Helper method to return article index.
+    # Helper method to return movie index.
     def movie_index(self, movie: Movie):
         index = bisect_left(self._movies, movie)
         if index != len(self._movies) and self._movies[index].title == movie.title:
             return index
         raise ValueError
+
+    def get_previous_actor(self, actor):
+        index = bisect_left(self._actors, actor)
+        if index != len(self._actors) and index > 0 and \
+                self._actors[index].actor_full_name == actor.actor_full_name:
+            return self._actors[index - 1]
+        else:
+            return None
+
+    def get_next_actor(self, actor):
+        index = bisect_left(self._actors, actor)
+        if index != len(self._actors) and index < len(self._actors) - 1 and \
+                self._actors[index].actor_full_name == actor.actor_full_name:
+            return self._actors[index + 1]
+        else:
+            return None
+
+    def get_previous_genre(self, genre):
+        index = bisect_left(self._genres, genre)
+        if index != len(self._genres) and index > 0 and \
+                self._genres[index].genre_name == genre.genre_name:
+            return self._genres[index - 1]
+        else:
+            return None
+
+    def get_next_genre(self, genre):
+        index = bisect_left(self._genres, genre)
+        if index != len(self._genres) and index < len(self._genres) - 1 and \
+                self._genres[index].genre_name == genre.genre_name:
+            return self._genres[index + 1]
+        else:
+            return None
+
+    def get_previous_director(self, director):
+        index = bisect_left(self._directors, director)
+        if index != len(self._directors) and index > 0 and \
+                self._directors[index].director_full_name == director.director_full_name:
+            return self._directors[index - 1]
+        else:
+            return None
+
+    def get_next_director(self, director):
+        index = bisect_left(self._directors, director)
+        if index != len(self._directors) and index < len(self._directors) - 1 and \
+                self._directors[index].director_full_name == director.director_full_name:
+            return self._directors[index + 1]
+        else:
+            return None
 
 
 def populate(data_path: str, repo: MemoryRepository):

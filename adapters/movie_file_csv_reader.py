@@ -52,6 +52,7 @@ class MovieFileCSVReader:
 
                 movie.director = director
                 movie.description = row['Description']
+                movie.runtime_minutes = int(row['Runtime (Minutes)'])
                 movie.actors = actor_list
                 movie.genres = genre_list
                 self._dataset_of_movies.append(movie)

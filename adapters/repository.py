@@ -111,6 +111,14 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_genre(self) -> List[Genre]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_director(self) -> List[Director]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def add_review(self, review: Review):
         """ Adds a Comment to the repository.
 
@@ -125,9 +133,27 @@ class AbstractRepository(abc.ABC):
         """ Returns the Reviews stored in the repository. """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_previous_actor(self, actor):
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_next_actor(self, actor):
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_previous_genre(self, genre):
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_next_genre(self, genre):
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_previous_director(self, director):
+        raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_next_director(self, director):
+        raise NotImplementedError
 
