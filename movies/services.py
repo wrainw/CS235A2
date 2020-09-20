@@ -6,7 +6,8 @@ from domain.actor import Actor
 from domain.director import Director
 from domain.genre import Genre
 
-class NonExistentArticleException(Exception):
+
+class NonExistentMovieException(Exception):
     pass
 
 
